@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
+from flask_migrate import Migrate    
+
 
 app = Flask(__name__)
 CORS(app)
@@ -14,6 +16,7 @@ class Base(DeclarativeBase):
   pass
 
 db = SQLAlchemy(app, model_class=Base)
+migrate = Migrate(app, db)    
 
 class TodoItem(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -28,6 +31,12 @@ class TodoItem(db.Model):
         }
 
 
+# ลบโค้ดสองบรรทัดนี้ จริง ๆ เราต้องลบส่วนสร้างฐานข้อมูลเท่านั้น แต่ถ้าไม่มีส่วนนี้โค้ดใส่ข้อมูลเบื้องต้นก็จะทำงานไม่ได้ด้วยเช่นกัน
+# with app.app_context():
+#    db.create_all()
+
+# ส่วนด้านล่างนี้ให้ comment ทิ้งเป็น string ไว้ก่อน
+
 INITIAL_TODOS = [
     TodoItem(title='Learn Flask'),
     TodoItem(title='Build a Flask App'),
@@ -35,10 +44,9 @@ INITIAL_TODOS = [
 
 with app.app_context():
     if TodoItem.query.count() == 0:
-         for item in INITIAL_TODOS:
-             db.session.add(item)
-         db.session.commit()
-
+        for item in INITIAL_TODOS:
+            db.session.add(item)
+        db.session.commit()
 
 
 @app.route('/api/todos/', methods=['GET'])
