@@ -2,36 +2,41 @@ import './App.css'
 import { useState } from 'react'
 
 function TodoItem({todo, toggleDone, deleteTodo, addNewComment}) {
-    const [newComment, setNewComment] = useState("");      // เพิ่ม state newComment
+    const [newComment, setNewComment] = useState("");
+
     return (
         <li key={todo.id}>
-                <span className={todo.done ? "done" : ""}>{todo.title}</span>
-                <button onClick={() => {toggleDone(todo.id)}}>Toggle</button>
-                <button onClick={() => {deleteTodo(todo.id)}}>❌</button>
-                            {(todo.comments) && (todo.comments.length > 0) && (
+            <span className={todo.done ? "done" : ""}>{todo.title}</span>
+            <button onClick={() => {toggleDone(todo.id)}}>Toggle</button>
+            <button onClick={() => {deleteTodo(todo.id)}}>❌</button>
+
+            {todo.comments && todo.comments.length > 0 ? (
                 <>
-                    <b>Comments:</b>
+                    <b>Comments: {todo.comments.length}</b>
                     <ul>
-                    {todo.comments.map(comment => (
-                        <li>{comment.message}</li>
-                    ))}
+                        {todo.comments.map(comment => (
+                            <li key={comment.id}>{comment.message}</li>
+                        ))}
                     </ul>
                 </>
-                )}
-                <div className="new-comment-forms">
+            ) : (
+                <p>No comments</p>
+            )}
+
+            <div className="new-comment-forms">
                 <input
                     type="text"
                     value={newComment}
                     onChange={(e) => {
-                    const value = e.target.value;
-                    setNewComment(value); 
+                        const value = e.target.value;
+                        setNewComment(value);
                     }}
                 />
-                <button onClick={() => {                         // แก้ส่วนนี้
+                <button onClick={() => {
                     addNewComment(todo.id, newComment);
                     setNewComment("");
                 }}>Add Comment</button>
-                </div>
+            </div>
         </li>
     )
 }
