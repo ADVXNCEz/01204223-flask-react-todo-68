@@ -35,5 +35,6 @@ describe('App', () => {
     expect(await screen.findByText('Second todo')).toBeInTheDocument();
     expect(await screen.findByText('First comment')).toBeInTheDocument();
     expect(await screen.findByText('Second comment')).toBeInTheDocument();
+    expect(await screen.findByText('yay')).toBeInTheDocument();
   });
 });
