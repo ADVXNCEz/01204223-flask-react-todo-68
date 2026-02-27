@@ -17,9 +17,7 @@ function TodoList({apiUrl}){
   async function fetchTodoList() {
     try {
           const response = await fetch(TODOLIST_API_URL, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`
-        }
+        headers: {'Authorization': `Bearer ${accessToken}`}
       });
       if (!response.ok) { 
         throw new Error('Network error');
@@ -37,6 +35,7 @@ function TodoList({apiUrl}){
     try {
       const response = await fetch(toggle_api_url, {
         method: 'PATCH',
+        headers: {'Authorization': `Bearer ${accessToken}`}
       })
       if (response.ok) {
         const updatedTodo = await response.json();
@@ -44,6 +43,7 @@ function TodoList({apiUrl}){
       }
     } catch (error) {
       console.error("Error toggling todo:", error);
+      setTodoList([]); 
     }
   }
 
@@ -53,7 +53,7 @@ function TodoList({apiUrl}){
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        },
+          'Authorization': `Bearer ${accessToken}`},
         body: JSON.stringify({ 'title': newTitle }),
       });
       if (response.ok) {
@@ -63,6 +63,7 @@ function TodoList({apiUrl}){
       }
     } catch (error) {
       console.error("Error adding new todo:", error);
+      setTodoList([]);
     }
   }
 
@@ -71,12 +72,14 @@ function TodoList({apiUrl}){
     try {
       const response = await fetch(delete_api_url, {
         method: 'DELETE',
+        headers: {'Authorization': `Bearer ${accessToken}`}
       });
       if (response.ok) {
         setTodoList(todoList.filter(todo => todo.id !== id));
       }
     } catch (error) {
       console.error("Error deleting todo:", error);
+      setTodoList([]);
     }
   }
 
@@ -87,6 +90,7 @@ function TodoList({apiUrl}){
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${accessToken}`
         },
        body: JSON.stringify({ 'message': newComment }),
       });
@@ -95,6 +99,7 @@ function TodoList({apiUrl}){
       }
     } catch (error) {
       console.error("Error adding new comment:", error);
+      setTodoList([]);
     }
   }
 
