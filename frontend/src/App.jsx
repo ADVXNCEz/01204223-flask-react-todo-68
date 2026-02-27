@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import './App.css'
 import LoginForm from './LoginForm.jsx';
 import TodoList from "./TodoList.jsx";
+import PrivateRoute from "./PrivateRoute.jsx";
 
 function App() {
   const TODOLIST_API_URL = 'http://localhost:5000/api/todos/';
@@ -11,12 +12,12 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route 
-            path="/" 
-            element={
+          <Route path="/" element={
+            <PrivateRoute>
               <TodoList apiUrl={TODOLIST_API_URL}/>
-            } 
-          />
+            </PrivateRoute>
+            } />
+          
           <Route 
             path="/about" 
             element={
@@ -27,12 +28,8 @@ function App() {
               </>
             } 
           />
-          <Route
-            path="/login"
-            element={
-              <LoginForm loginUrl={TODOLIST_LOGIN_URL} />
-            }
-          />
+
+          <Route path="/login" element={<LoginForm loginUrl={TODOLIST_LOGIN_URL} />}/>
 
         </Routes>
       </BrowserRouter>

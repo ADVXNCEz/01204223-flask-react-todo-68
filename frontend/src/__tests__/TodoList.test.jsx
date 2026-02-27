@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { vi } from 'vitest'
-import App from '../App.jsx'
+import TodoList from '../App.jsx'
 
 const mockResponse = (body, ok = true) =>
   Promise.resolve({
@@ -34,7 +34,7 @@ describe('App', () => {
         mockResponse(originalTodoList)
     );
 
-    render(<App />);
+    render(<TodoList />);
     expect(await screen.findByText('First todo')).toBeInTheDocument();
     expect(await screen.findByText('Second todo')).toBeInTheDocument();
     expect(await screen.findByText('First comment')).toBeInTheDocument();
