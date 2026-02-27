@@ -17,10 +17,7 @@ jwt = JWTManager(app)
 db.init_app(app) 
 migrate = Migrate(app, db)    
 
-@app.route('/api/todos/', methods=['GET'])
-def get_todos():
-    todos = TodoItem.query.all()
-    return jsonify([todo.to_dict() for todo in todos])
+
 
 def new_todo(data):
     return TodoItem(title=data['title'], 
